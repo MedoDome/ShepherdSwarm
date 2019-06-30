@@ -2,6 +2,8 @@
 
 A Docker swarm service for automatically updating your services whenever their base image is refreshed.
 
+## Project forked from [https://github.com/djmaze/shepherd](Shepherd)
+
 ## Usage
 
     docker service create --name shepherd \
@@ -17,7 +19,7 @@ A Docker swarm service for automatically updating your services whenever their b
         build: .
         image: mazzolino/shepherd
         volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
+          - /var/run/docker.sock:/var/run/docker.sock:ro
         deploy:
           placement:
             constraints:
