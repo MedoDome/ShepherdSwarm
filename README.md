@@ -2,7 +2,7 @@
 
 A Docker swarm service for automatically updating your services whenever their base image is refreshed.
 
-## Project forked from [https://github.com/djmaze/shepherd](Shepherd)
+## Project forked from [Shepherd](https://github.com/djmaze/shepherd)
 
 ## Usage
 
