@@ -45,7 +45,7 @@ update_services() {
 
             echo "Pulled image: $pulled_image / Original image $image_without_tag"
 
-            #docker service update "$service" $detach_option $registry_auth --image="$pulled_image" > /dev/null
+            docker service update "$service" $detach_option $registry_auth --image="$pulled_image" > /dev/null
 
                 if [ "$name" == "beboo_beboo-api"  ]; then
                     echo "Upstreaming beboo ws";
