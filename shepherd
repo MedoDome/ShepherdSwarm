@@ -45,7 +45,16 @@ update_services() {
 
             echo "Pulled image: $pulled_image / Original image $image_without_tag"
 
-            docker service update "$service" $detach_option $registry_auth --image="$pulled_image" > /dev/null
+            #docker service update "$service" $detach_option $registry_auth --image="$pulled_image" > /dev/null
+
+                if [ "$name" == "beboo_beboo-api"  ]; then
+                    echo "Upstreaming beboo ws";
+                    docker ps | grep beboo_beboo-api. | cut -d " " -f1  |  xargs docker inspect --format '{{ $network := index .NetworkSettings.Networks "nginx_nginx-proxy" }}{{ $network.IPAddress}}' | xargs -I {} echo server {}:8090\; > upstream.conf
+
+                    docker ps | grep nginx_nginx.1. | cut -d " " -f1  | xargs -I {} docker cp upstream.conf {}:/etc/nginx/upstream.conf
+                    docker ps | grep nginx_nginx.1. | cut -d " " -f1  | xargs -I '{}' docker exec  {} service nginx reload
+
+                fi
 
             previousImage=$(docker service inspect "$service" -f '{{.PreviousSpec.TaskTemplate.ContainerSpec.Image}}')
             currentImage=$(docker service inspect "$service" -f '{{.Spec.TaskTemplate.ContainerSpec.Image}}')
