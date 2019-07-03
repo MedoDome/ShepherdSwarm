@@ -48,11 +48,14 @@ update_services() {
             docker service update "$service" $detach_option $registry_auth --image="$pulled_image" > /dev/null
 
                 if [ "$name" == "beboo_beboo-api"  ]; then
-                    echo "Upstreaming beboo ws";
+                   echo "Upstreaming beboo ws";
+                    echo "Creating upstream file"
                     docker ps | grep beboo_beboo-api. | cut -d " " -f1  |  xargs docker inspect --format '{{ $network := index .NetworkSettings.Networks "nginx_nginx-proxy" }}{{ $network.IPAddress}}' | xargs -I {} echo server {}:8090\; > upstream.conf
 
+                    cat upstream.conf
+
                     docker ps | grep nginx_nginx.1. | cut -d " " -f1  | xargs -I {} docker cp upstream.conf {}:/etc/nginx/upstream.conf
-                    docker ps | grep nginx_nginx.1. | cut -d " " -f1  | xargs -I '{}' docker exec  {} service nginx reload
+                    docker ps | grep nginx_nginx.1. | cut -d " " -f1  | xargs -I '{}' docker exec  {} nginx -s reload
 
                 fi
 
