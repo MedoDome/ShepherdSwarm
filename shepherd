@@ -29,6 +29,21 @@ update_services() {
 
             #Download locally image 
             #TODO Make possible remote check
+            #TODO Make multiple images check 
+            
+            if [[ $image == *":alpha-latest"* ]]; then
+
+                image=$(echo "$image" | cut -d: -f1)
+                image=$(echo "$image:alpha-latest")
+                image_without_tag=${image_with_digest/:alpha-latest}
+
+            else
+                image=$(echo "$image" | cut -d: -f1)
+                image=$(echo "$image:latest")
+                image_without_tag=${image_with_digest/:latest}
+
+            fi
+            
 
             docker pull $image
 
@@ -36,8 +51,6 @@ update_services() {
             pulled_image="$(docker inspect --format='{{index .RepoDigests 0}}' $image)"
 
             #Removing :latest tag from image
-
-            image_without_tag=${image_with_digest/:latest}
 
             if [ "$pulled_image" != "$image_without_tag" ]; then
 
